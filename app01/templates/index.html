@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title> ——MBC—— </title>
+    <title> 包头意林 </title>
     {% load static %}
     <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1/css/bootstrap.min.css' %}">
@@ -18,7 +18,7 @@
 <nav class="navbar navbar-default">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/"> 欢迎光临 ——MBC—— </a>
+            <a class="navbar-brand" href="/"> 欢迎光临 包头意林 </a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
@@ -26,7 +26,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false"> AI 相关 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/ai/list01/">AI 网站列表</a></li>
+                        <li><a href="#">AI 网站列表</a></li>
                         <li role="separator" class="divider"></li>
                     </ul>
                 </li>
@@ -54,10 +54,10 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">用户：{{ request.session.info.name }}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/user_change_pwd/">修改密码</a></li>
+                        <li><a href="#">修改密码</a></li>
                         <li><a href="#">我的信息</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="/sign_out/">注销</a></li>
+                        <li><a href="#">注销</a></li>
                     </ul>
                 </li>
             </ul>
