@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MBC仓储管理系统</title>
+</head>
+<body>
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> </title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1/css/bootstrap.min.css' %}">
+
+    {% block datepick_css %}{% endblock %}
+    <style>
+        .navbar {
+            border-radius: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/"> 意林仓储管理系统 </a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"> 行政管理 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/ai/list01/">AI 相关</a></li>
+                        <li><a href="/depart/list01/">部门管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/user/list01/">员工管理</a></li>
+                        <li><a href="/admin/list01/">管理员账号</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"> 仓储管理 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/mate/list01/">物料管理</a></li>
+                        <li><a href="/supplier/list01/">供应商管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/warehousing/add01/">入库单录入</a></li>
+                        <li><a href="/warehousing/list01/">入库列表</a></li>
+	                    <li role="separator" class="divider"></li>
+                        <li><a href="/outbound/list01/">出库单录入</a></li>
+	                    <li role="separator" class="divider"></li>
+                        <li><a href="/inventory/list01/">每月盘点</a></li>
+                        <li><a href="#"> 财务汇总 </a></li>
+                    </ul>
+                </li>
+                <li><a href="#" style="color: #c4e3f3"> 销售管理 </a></li>
+                <!--  测试  -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false" style="color: darkorange"> 测试菜单 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/index/test01/"> 测试-01 </a></li>
+                        <li><a href="/index/test02/"> 测试-02 </a></li>
+                        <li><a href="/index/test03/"> 测试-03 </a></li>
+                        <li><a href="/index/test04/"> 测试-04 </a></li>
+                        <li><a href="/index/test05/"> 测试-05 </a></li>
+                    </ul>
+                </li>
+                <!--  测试 end -->
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">用户：{{ request.session.info.name }}<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/user_change_pwd/">修改密码</a></li>
+                        <li><a href="#">我的信息</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/sign_out/">注销</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{% block content %}{% endblock %}
+
+<div style="background-image:{% static 'img/123.PNG' %})"></div>
+
+<script src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.min.js' %}"></script>
+
+{% block datepick_js %}{% endblock %}
+{% block js %}{% endblock %}
+
+<script type="text/javascript">
+    {% block title %}{% endblock %}
+</script>
+</body>
+</html>
+
+
+</body>
+</html>

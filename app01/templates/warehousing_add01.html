@@ -1,0 +1,191 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block datepick_css %}
+	<link rel="stylesheet" href="{% static 'plugins/bootstrap-datepicker/css/bootstrap-datepicker.css' %}"
+	      media="screen">
+	<link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %}">
+{% endblock %}
+
+{% block content %}
+	<!-- ====== 标题及面板 ====== -->
+	<div class="row">
+		<div class="panel panel-info col-md-offset-2 col-md-8">
+			<div class="panel-heading">
+				<h3 class="panel-title col-md-offset-5">
+					<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+					填写入库单
+				</h3>
+			</div>
+			<form class="form-horizontal" method="post" autocomplete="off" style="margin-top: 10px" novalidate>
+				{% csrf_token %}
+				<div class="clearfix">
+					{% for field in formAdd %}
+						<div class="col-xs-6">
+							<div class="form-group" style="margin-bottom: 1px">
+								<label style="color: #6c757d" class="col-sm-3 control-label">{{ field.label }}：</label>
+								<label class="col-sm-8 col-form-label-sm">{{ field }}</label>
+								<span style="color: brown"> {{ field.errors.0 }} </span>
+							</div>
+						</div>
+					{% endfor %}
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-default ">保 存</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-offset-1 col-md-10">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title  col-sm-offset-5">
+						<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+						入库单列表（未审核）
+					</h3>
+				</div>
+
+				<!-- ====== 正文 ====== -->
+				<div class="bs-example">
+					<table class="table table-bordered">
+						<thead>
+						<tr>
+							{% for field in form %}
+								<th style="color: #6c757d">{{ field.label }}</th>
+							{% endfor %}
+							<th style="color: #6c757d">状态</th>
+							<th style="color: #6c757d">操作</th>
+						</tr>
+						</thead>
+						<tbody>
+						{% for obj in queryset %}
+							<tr>
+								<td>{{ obj.warehousing_date|date:"Y-m-d" }}</td>
+								<td>{{ obj.warehousing_name.name }}</td>
+								<td>{{ obj.supplier.name }}</td>
+								<td>{{ obj.quantity }}</td>
+								<td>{{ obj.unit_price }}</td>
+								<td>{{ obj.price }}</td>
+								<td>{{ obj.get_approved_display }}</td>
+								<td>
+									{% if obj.approved == 0 %}
+										<a class="btn btn-success btn-xs"
+										   href="/warehousing/{{ obj.id }}/list/edit01/">修改</a>
+										<a class="btn btn-primary btn-xs"
+										   href="/warehousing/{{ obj.id }}/add/approved01/">审核</a>
+										<input type="button" value="删除" uid="{{ obj.id }}"
+										       class="btn btn-danger btn-xs btn-delete">
+									{% endif %}
+								</td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- ====== 正文end ====== -->
+			</div>
+		</div>
+	</div>
+	<!-- ====== 标题及面板end ====== -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+
+			<div class="alert alert-danger alert-dismissible fade in" role="alert">
+				<h4 style="text-shadow: #761c19">【 警告 ！！！】 确定要删除？</h4>
+				<p style="margin: 20px 10px;">
+					删除内容不可恢复，并且现有数据可能与其他数据关联，有可能删除其他没有显示的数据！请小心操作。</p>
+				<hr>
+				<p style="text-align: right;">
+					<button id="btnConFirmDelete" type="button" class="btn btn-danger">确定删除</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</p>
+			</div>
+
+		</div>
+	</div>
+
+	{% if messages %}
+		<script type="text/javascript">
+            {% for msg in messages %}
+                alert('{{ msg.message }}');
+            {% endfor %}
+		</script>
+	{% endif %}   <!-- 错误信息 -->
+
+{% endblock %}
+
+{% block datepick_js %}
+	<script src="{% static 'plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
+	<script src="{% static 'plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-TW.min.js' %}"></script>
+	<script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.js' %}"></script>
+	<script src="{% static 'plugins/bootstrap-select/js/i18n/defaults-zh_TW.js.map' %}"></script>
+	<script>
+
+        $(function () {
+            $("#id_warehousing_date").datepicker({
+                format: 'yyyy-mm-dd',
+                language: 'zh-TW',
+                autoClose: true,
+                todayHighlight: true,
+                todayBtn: true,
+            });
+            $("#id_warehousing_date").datepicker("setDate", new Date());
+        });
+        $(function () {
+            $("#id_produceDate").datepicker({
+                format: 'yyyy-mm-dd',
+                language: 'zh-TW',
+                autoClose: true,
+                todayHighlight: true,
+                todayBtn: true,
+            });
+            $("#id_produceDate").datepicker("setDate", new Date());
+        });
+	</script>
+{% endblock %}
+
+{% block js %}
+	<script type="text/javascript">
+        var DELETE_ID;  // 声明全局变量
+
+        $(function () {
+            bind_Js_delete();
+            bind_ConFirmDelete();
+        })
+
+        function bind_Js_delete() {
+            $('.btn-delete').click(function () {
+                // 点击删除按钮执行，显示删除对话框
+                $('#myModal').modal('show');
+
+                // 获取当前行的ID，赋值给全局变量：var
+                DELETE_ID = $(this).attr("uid");
+            });
+        }
+
+        function bind_ConFirmDelete() {
+            $("#btnConFirmDelete").click(function () {
+                // 点击确认按钮，将全局变量中的id发送给后台
+                $.ajax({
+                    url: "/warehousing/list/delete01/",
+                    type: "GET",
+                    data: {
+                        uid: DELETE_ID
+                    },
+                    dataType: "JSON",
+                    success: function (res) {
+                        if (res.status) {
+                            // 刷新页面
+                            location.reload();
+                        } else {
+                            // 删除失败
+                            alert(res.error);
+                        }
+
+                    }
+                })
+            })
+        }
+	</script>
+{% endblock %}

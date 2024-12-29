@@ -1,0 +1,212 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+	<link rel="stylesheet" href="{% static 'plugins/bootstrap-datepicker/css/bootstrap-datepicker.css' %}"
+	      media="screen">
+	<!-- ====== 标题及面板 ====== -->
+	<div class="panel panel-info col-sm-offset-1 col-sm-10">
+		<div style="margin-bottom: 4px; margin-top: 4px" class="col-sm-2 clearfix">
+			<!-- 添加盘点数据录入跳转地址 -->
+			<a id="js_add" class="btn btn-default btn-delete">
+				<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+				开始盘点
+			</a>
+		</div>
+
+		<!-- 搜索框 -->
+		<form method="get">
+			<div style="float: right; margin-right: 4px; margin-top: 4px; width: 200px;">
+				<form method="get">
+					<div class="input-group" style="width: 200px">
+						<input type="text" name="choice_name" class="form-control" placeholder="名称关键字">
+						<span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">搜索物料</button>
+                        </span>
+					</div>
+				</form>
+			</div>
+		</form>
+		<!-- 搜索框 end -->
+
+		<div class="panel-heading">
+			<h3 class="panel-title  col-sm-offset-5">
+				<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+				近期盘点数据列表
+			</h3>
+		</div>
+
+		<!-- ====== 正文 ====== -->
+
+		<div class="bs-example">
+			<form method="get">
+				<table class="table table-bordered">
+					<thead>
+					<tr>
+						<th style="color: #6c757d"> ID</th>
+						{% for field in form %}
+							<th style="color: #6c757d">{{ field.label }}</th>
+						{% endfor %}
+						<th style="color: #6c757d">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+
+					{% for obj in queryset %}
+						<tr>
+							<td>{{ obj.id }}</td>
+							<td>{{ obj.inventoryDate|date:"Y-m-d" }}</td>
+							<td>{{ obj.name.name }}</td>
+							<td>{{ obj.inventoryQuantity }}</td>
+							<td>{{ obj.bookQuantity }}</td>
+							<td>{{ obj.bookAmount }}</td>
+							<td>{{ obj.errorsNumber }}</td>
+							<td>{{ obj.errorsAmount }}</td>
+							<td>{{ obj.operator.name }}</td>
+							<td>{{ obj.get_approved_display }}</td>
+
+							<td>
+								<!--下面这个也可以实现弹窗-->
+								{% if obj.approved == 0 %}
+									<a class="btn btn-success btn-xs"
+									   href="/inventory/{{ obj.id }}/edit01/">修改</a>
+									<a class="btn btn-primary btn-xs"
+									   href="/inventory/{{ obj.id }}/list/approved01/">审核</a>
+									<!--
+									<input type="button" value="删除" uid="{{ obj.id }}"
+									       class="btn btn-danger btn-xs btn-delete">
+									       -->
+								{% endif %}
+							</td>
+
+						</tr>
+					{% endfor %}
+
+					</tbody>
+				</table>
+			</form>
+		</div>
+
+		<!-- 分页 -->
+		<ul class="pagination clearfix">
+			<!-- 输入页码跳转 -->
+			<form method="get"></form>
+			<div style="float: right; width: 150px;">
+				<form method="get">
+					<div class="input-group" style="width: 150px">
+						<input type="text" name="page" class="form-control" placeholder="页码">
+						<span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">跳转</button>
+                        </span>
+					</div>
+				</form>
+			</div>
+			<!-- 输入页码跳转 end -->
+			{{ page_string }}
+		</ul>
+		<!-- 分页 end -->
+
+		<!-- ====== 正文end ====== -->
+	</div>
+	<!-- ====== 标题及面板end ====== -->
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="myModalLabel" style="color: #0f6674">选择录入方式</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-lg-6">
+							<h5 style="color: #6c757d">选择盘点日期后，开始录入:</h5>
+							<div class="input-group">
+							      <span class="input-group-btn">
+								      <button id="date_go" class="btn btn-primary" type="submit">开始</button>
+							      </span>
+								<input id="choice_date" type="text" class="form-control" placeholder="选择日期">
+							</div><!-- /input-group -->
+						</div><!-- /.col-lg-6 -->
+						<div class="col-lg-6">
+							<h5 style="color: #6c757d">盘点文件批量上传:</h5>
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="选择文件...">
+								<span class="input-group-btn">
+									<button id="file_go" class="btn btn-default" type="button">待完善</button>
+								</span>
+							</div><!-- /input-group -->
+						</div><!-- /.col-lg-6 -->
+					</div><!-- /.row -->
+					<hr/>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block js %}
+	<script src="{% static 'plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
+	<script src="{% static 'plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-TW.min.js' %}"></script>
+	<script type="text/javascript">
+        var js_date
+        $(function () {
+            bind_Js_add();
+            bind_choice_date();
+            bind_date_go();
+            bind_file_go();
+        });
+
+        function bind_Js_add() {
+            $('#js_add').click(function () {
+                // 点击选择日期按钮，弹出对话框
+                $('#myModal').modal('show');
+            })
+        }
+
+        function bind_choice_date() {
+            // 日期选择器
+            $("#choice_date").datepicker({
+                format: 'yyyy-mm-dd',
+                language: 'zh-TW',
+                autoClose: true,
+                todayHighlight: true,
+                todayBtn: true,
+                maxDate: true,
+            });
+            $("#choice_date").datepicker("setDate", new Date());
+            // $('#choice_date').datepicker('option', 'maxDate', '+0d');
+        }
+
+        function bind_date_go() {
+            // 选择日期手工录入盘点数据
+            $("#date_go").click(function () {
+                // alert('保存')
+                $.ajax({
+                    url: "/inventory/js_add01/",
+                    type: "get",
+                    data: {
+                        "js_date": $('#choice_date').datepicker().val(),
+                    },
+                    dataType: 'JSON',
+                    success: function (res) {
+                        console.log(res);
+                    }
+                })
+                $('#myModal').modal('hide') // 关闭弹窗
+                top.location.href = "/inventory/add01/"   // 跳转页面
+            });
+        }
+
+        function bind_file_go() {
+            // 文件批量上传,待完善......
+            $("#file_go").click(function () {
+                alert('文件批量上传,......  待完善  ......')
+                console.log();
+                $.ajax({});
+
+            });
+        }
+
+	</script>
+{% endblock %}

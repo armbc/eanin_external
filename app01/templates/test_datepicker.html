@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-datepicker/css/bootstrap-datepicker.css' %}"
+          media="screen">
+</head>
+<body>
+
+<input style="width: 500px; margin-top: 100px"
+       type="text"
+       id="dt"
+       class="form-control col-md-offset-4 col-sm-6"
+       placeholder="入职时间">
+
+<!-- <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
+<script src="{% static 'js/jquery-3.6.3.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-TW.min.js' %}"></script>
+
+<script>
+    $(function () {
+        $("#dt").datepicker({
+            format: 'yyyy-mm-dd',
+            language: 'zh-TW',
+            autoClose: true,
+            todayHighlight: true,
+            todayBtn: true,
+        });
+        $("#dt").datepicker("setDate", new Date());
+    });
+</script>
+
+</body>
+</html>

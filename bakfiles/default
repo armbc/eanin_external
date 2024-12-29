@@ -1,0 +1,39 @@
+server {
+    listen 80;
+    listen 443 ssl;
+
+    server_name first.mbcai.top;
+
+    # 指定起始文件目录
+    root /mbc/mbcaiWeb/app01/templates/;
+    index index.html index.htm;
+
+    # SSL 配置
+    ssl_certificate /etc/cloudflare/certificate.pem;
+    ssl_certificate_key /etc/cloudflare/certificate.key;
+    ssl_trusted_certificate /etc/cloudflare/GTS_Root_R4.pem;
+
+    # 静态文件请求的处理
+    location /static/ {
+        alias /mbc/mbcaiWeb/staticfiles/;
+        expires 30d;
+        add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+        add_header X-Content-Type-Options nosniff;  # 防止MIME类型猜测
+        access_log off;	# 可选：关闭静态文件的访问日志，减少日志文件大小
+    }
+
+    # 配置动态内容，所有其他请求代理到 Django，通过 uWSGI 处理
+    location / {
+        include uwsgi_params;
+        uwsgi_pass 127.0.0.1:8080;  # 指向 uWSGI 服务器监听的 HTTP 端口
+        try_files $uri @django;
+    }
+
+    location @django {
+        uwsgi_pass 127.0.0.1:8080;
+        include uwsgi_params;
+    }
+
+    access_log /var/log/nginx/first_mbcai_access.log;
+    error_log /var/log/nginx/first_mbcai_error.log;
+}
