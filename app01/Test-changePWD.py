@@ -27,6 +27,9 @@ def md5(data_string):
     return obj.hexdigest()
 
 
-pwd = '123456'
+# pwd = '123456'
+# mped = md5(pwd)
+# print(mped)  # ae23c4e339ca087f11b0145624160f25
+pwd = 'H}J|8$2j<g7h_h'
 mped = md5(pwd)
-print(mped)  # ae23c4e339ca087f11b0145624160f25
+print(mped)  # 73246879238cc11259c5fa1086845092

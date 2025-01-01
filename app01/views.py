@@ -1,7 +1,6 @@
 from django.shortcuts import render
 import os
 
-
 # -------------- 从环境变量中获取APIkey，渲染一个JavaScript变量api_key
 """
 前端模板用法：
@@ -17,6 +16,8 @@ import os
     // ... rest of your fetch code
 </script>
 """
+
+
 def index_api_key(request):
     api_key = os.environ.get('mbcai_api_key')
     return render(request, 'index.html', {'api_key': api_key})
@@ -26,4 +27,6 @@ def index_api_key(request):
 def index(request):
     """首页"""
     return render(request, "index.html")
+
+
 # -------------- 首页end -------------- #

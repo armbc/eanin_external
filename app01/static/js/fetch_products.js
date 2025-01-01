@@ -1,3 +1,5 @@
+const v3ApiKey = "{{ api_key }}"; // Django模板变量
+
 fetch('https://mbcai.top/api/products/', {
     headers: {
         'Authorization': 'Api-Key v3ApiKey' // 使用你的JavaScript变量
