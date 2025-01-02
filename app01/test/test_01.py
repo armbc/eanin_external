@@ -1,7 +1,7 @@
 import requests
 
 API_KEY = 'o9TqkiFs.dSzA8GeXP5neLkbX47wWrEm7KXtRM2fE'  # 替换为实际的API Key
-V3_API_URL = 'http://www.mbcai.top/api/products'
+V3_API_URL = 'http://www.mbcai.top/api/products/'
 # V3_API_URL = 'https://mbcai.top/api/products/1/'
 
 headers = {
