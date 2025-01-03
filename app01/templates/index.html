@@ -1,82 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title> 包头意林 </title>
-    {% load static %}
-    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
-    <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1/css/bootstrap.min.css' %}">
-    {% block datepick_css %}{% endblock %}
+{% block title %}EANIN{% endblock %}
+{% load static %}
+
+{% block content %}
     <style>
-        .navbar {
-            border-radius: 8px;
+        .background-image-container {
+            background-image: url('{% static 'img/from_internet/coffee-WP.webp' %}');
+            background-size: cover;
+            background-position: center;
+            height: 855px;
+            width: 100%;
+            position: relative;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
         }
     </style>
-</head>
-<body>
-<nav class="navbar navbar-default">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/"> 欢迎光临 包头意林 </a>
-        </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false"> AI 相关 <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">AI 网站列表</a></li>
-                        <li role="separator" class="divider"></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false"> 系统管理 <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">管理1</a></li>
-                        <li role="separator" class="divider"></li>
-                    </ul>
-                </li>
-                <li><a href="#" style="color: #c4e3f3"> 博客 </a></li>
-                <!--  测试  -->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false" style="color: darkorange"> 测试菜单 <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#"> 测试-01 </a></li>
-                    </ul>
-                </li>
-                <!--  测试 end -->
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">用户：{{ request.session.info.name }}<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">修改密码</a></li>
-                        <li><a href="#">我的信息</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">注销</a></li>
-                    </ul>
-                </li>
-            </ul>
+    <div class="background-image-container">
+        <div class="overlay">
+            <dl class="row">
+                <dt class="col-sm-12">
+                    <!--- <img src="{% static 'img/Logo(300x51).png' %}" --->
+                         alt="欢迎光临 EANIN" style="max-width: 100%;">
+                </dt>
+                <dd style="height: 20px;"></dd>
+                <dd class="col-sm-10 offset-2" style="color: #f5f5f5">欢迎光临 EANIN</dd>
+            </dl>
         </div>
     </div>
-</nav>
 
-{% block content %}{% endblock %}
-
-<div style="background-image: url('{% static 'img/123.PNG' %}')"></div>
-
-<script src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
-<script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.min.js' %}"></script>
-
-{% block datepick_js %}{% endblock %}
-{% block js %}{% endblock %}
-
-<script type="text/javascript">
-    {% block title %}{% endblock %}
-</script>
-</body>
-</html>
+{% endblock %}

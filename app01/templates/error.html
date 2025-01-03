@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}EANIN{% endblock %}
+{% load static %}
+{% block content %}
+
+    <h1>出错了</h1>
+
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% else %}
+        <p>很抱歉，出了一些问题。</p>
+    {% endif %}
+
+    <p><a href="{% url 'index' %}">返回首页</a></p> {#  替换 'home' 为你的首页 URL 名称 #}
+
+{% endblock %}
