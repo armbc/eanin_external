@@ -1,18 +1,81 @@
 {% extends 'base.html' %}
-
 {% block title %}EANIN{% endblock %}
 {% load static %}
-
 {% block content %}
     <div class="row">
         <div class="col-sm-4" style="margin-top: 10px; margin-left: 20px; ">
             <img src="{% static 'img/Logo(300x51).png' %}" alt="欢迎光临 EANIN" style="max-width: 100%; ">
         </div>
-        <div class="col-sm-2"
-             style="color: #0f500b; margin-top: 10px; display: flex; justify-content: flex-end; align-items: flex-end; height: 50px;">
-            欢迎光临 EANIN
-        </div>
     </div>
 
+    <div class="main-container">
+        <!-- 主要容器的内容 -->
+        <div class="category-title">
+            <h2>蛋糕系列</h2>
+        </div>
+        <div class="product-list">
+            {% for cake in cakes %}
+                <div class="product">
+                    <a href="{{ cake.url }}" class="product-title">
+                        <h6>{{ cake.name }}</h6>
+                        <img src="{% static cake.image %}" alt="{{ cake.name }}">
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <!-- ...更多内容... -->
+    </div>
 
+    <style>
+        .main-container {
+            width: 94%;
+            margin: 0 auto; /* 简化的居中写法 */
+            display: flex;
+            flex-direction: column; /*  使标题和产品列表垂直排列 */
+            align-items: center; /* 水平居中 */
+            /* border: 1px solid red; 可选，用于可视化容器边界 */
+            overflow: auto;
+            min-height: 300px;
+            color: #114639;
+        }
+
+        .category-title {
+            text-align: center;
+            padding-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around; /* 平均分布产品 */
+            width: 100%; /*  确保产品列表占满容器宽度 */
+        }
+
+        .product {
+            width: 18%; /*  调整宽度以适应 5 个产品，并留有一些间距 */
+            margin-bottom: 20px; /*  产品之间的垂直间距 */
+            text-align: center; /*  使标题和图片居中 */
+            /*  border: 1px solid red; */
+        }
+
+        .product img {
+            max-width: 100%; /*  图片不超过容器宽度 */
+            height: auto; /*  保持图片比例 */
+            display: block; /*  防止图片底部出现空白 */
+            /*  border: 1px solid gold;  */
+        }
+
+        .product-title {
+            margin-bottom: 10px;
+            text-decoration: none; /*  移除链接下划线 */
+            color: inherit; /*  继承父元素的文本颜色 */
+            display: block; /*  确保链接占据整个标题区域 */
+        }
+
+        .product-title:hover {
+            text-decoration: underline; /*  鼠标悬停时显示下划线 */
+            /*  或者其他你喜欢的悬停效果 */
+        }
+    </style>
 {% endblock %}

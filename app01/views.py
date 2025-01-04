@@ -2,6 +2,7 @@ from django.shortcuts import render
 import os
 from django.http import HttpResponse
 import requests
+from django.urls import reverse
 
 # -------------- 从环境变量中获取APIkey，渲染一个JavaScript变量api_key
 """
@@ -52,24 +53,15 @@ def get_data_from_v3(url, params=None):
 
 # -------------- 首页 -------------- #
 def index(request):
-    """首页 从 V3 获取产品数据并按分类展示 """
-    v3_api_url = "https://mbcai.top/api/products/"
-
-    categories = ["cake", "bread", "dessert"]   # 定义需要获取的类别
-    products_by_category = {}
-
-    for category in categories: # 使用循环遍历 `categories` 列表，避免重复代码
-        params = {"category": category}
-        products_data = get_data_from_v3(v3_api_url, params=params)
-
-        if products_data:
-            products_by_category[category] = products_data
-
-    context = {
-        "products_by_category": products_by_category,
-    }
-    print(context)
-    return render(request, "index.html", context)
+    cakes = [
+        {"name": "巧克力蛋糕", "image": "img/images/cake/女王蛋糕.webp", "url": reverse('cake_list')},
+        {"name": "水果蛋糕", "image": "img/images/cake/女王蛋糕.webp", "url": "#"},
+        {"name": "奶油蛋糕", "image": "img/images/cake/女王蛋糕.webp", "url": "#"},
+        {"name": "儿童蛋糕", "image": "img/images/cake/女王蛋糕.webp", "url": "#"},
+        {"name": "节日蛋糕", "image": "img/images/cake/女王蛋糕.webp", "url": "#"},
+    ]
+    context = {'cakes': cakes}
+    return render(request, 'index.html', context)
 
 
 # -------------- 首页end -------------- #
@@ -77,25 +69,25 @@ def index(request):
 
 # -------------- 蛋糕分类 -------------- #
 def cake_list(request):
-    # 获取API key
-    api_key = os.environ.get('MBCAI_API_KEY')  # 获取环境变量
-    headers = {'Authorization': f'Api-Key {api_key}'}
+    """首页 从 V3 获取产品数据并按分类展示 """
+    v3_api_url = "https://mbcai.top/api/products/"
 
-    # 从 V3 获取产品数据
-    url = "http://www.mbcai.top/api/products/"  # 替换为你的 V3 API 地址
-    # print(api_key)
-    try:
-        response = requests.get(url, headers=headers)  # 设置超时时间
-        response.raise_for_status()  # 如果状态码不是 2xx，则引发 HTTPError 异常
-        products = response.json()
-    except requests.exceptions.RequestException as e:
-        # 处理异常，例如记录错误日志，返回错误页面等
-        print(f"Error fetching product data: {e}")  # 调试期间打印错误信息
-        return render(request, 'error.html', {'error_message': '无法获取产品数据。'}, status=500)  # 返回错误页面
+    categories = ["cake"]  # 定义需要获取的类别
+    products_by_category = {}
 
-    cakes = [product for product in products if product.get('category') == 'cake']  # 使用 get() 方法避免 KeyError
-    print(cakes)
-    return render(request, 'cake_list.html', {'products': cakes})
+    for category in categories:  # 使用循环遍历 `categories` 列表，避免重复代码
+        params = {"category": category}
+        products_data = get_data_from_v3(v3_api_url, params=params)
+
+        if products_data:
+            products_by_category[category] = products_data
+        else:
+            products_by_category[category] = []  # 或其他默认值
+    context = {
+        "products_by_category": products_by_category,
+    }
+    print(context)
+    return render(request, "cake_list.html", context)
 
 
 # -------------- 蛋糕分类 end -------------- #

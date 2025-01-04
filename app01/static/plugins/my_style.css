@@ -1,16 +1,15 @@
 body {
-    background-color: #e2ece9;     /* 设置背景颜色 */
+    background-color: #e2ece9; /* 设置背景颜色 */
 }
-.img-rounded {  /* 设置图片圆角 */
+
+.img-rounded { /* 设置图片圆角 */
     border-radius: 10px;
     object-fit: cover;
     max-width: 100%;
     max-height: 100%;
     text-align: center;
 }
-.carousel-item img {    /* 设置轮播图片自动调整大小以适应规定好的高度 */
-  object-fit: contain;
-}
-.category-select {  /* 产品类别下拉菜单的宽度 */
-    width: 100px;
+
+.carousel-item img { /* 设置轮播图片自动调整大小以适应规定好的高度 */
+    object-fit: contain;
 }
