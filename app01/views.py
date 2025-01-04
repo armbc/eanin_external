@@ -54,7 +54,7 @@ def get_data_from_v3(url, params=None):
 # -------------- 首页 -------------- #
 def index(request):
     cakes = [
-        {"name": "巧克力蛋糕", "image": "img/images/cake/女王蛋糕.webp", "url": reverse('cake_list')},
+        {"name": "巧克力蛋糕", "image": "img/images/cake/女王蛋糕.webp", "url": reverse('cake_choco_list')},
         {"name": "水果蛋糕", "image": "img/images/cake/女王蛋糕.webp", "url": "#"},
         {"name": "奶油蛋糕", "image": "img/images/cake/女王蛋糕.webp", "url": "#"},
         {"name": "儿童蛋糕", "image": "img/images/cake/女王蛋糕.webp", "url": "#"},
@@ -68,26 +68,18 @@ def index(request):
 
 
 # -------------- 蛋糕分类 -------------- #
-def cake_list(request):
-    """首页 从 V3 获取产品数据并按分类展示 """
+def cake_choco_list(request):
+    """首页 从 V3 获取 "cake" 类别下 "choco-" 开头的产品数据"""
     v3_api_url = "https://mbcai.top/api/products/"
+    params = {"category": "cake", "prefix": "choco-"}
+    # params = {"category": "cake"}
+    products_data = get_data_from_v3(v3_api_url, params=params)
 
-    categories = ["cake"]  # 定义需要获取的类别
-    products_by_category = {}
-
-    for category in categories:  # 使用循环遍历 `categories` 列表，避免重复代码
-        params = {"category": category}
-        products_data = get_data_from_v3(v3_api_url, params=params)
-
-        if products_data:
-            products_by_category[category] = products_data
-        else:
-            products_by_category[category] = []  # 或其他默认值
     context = {
-        "products_by_category": products_by_category,
+        "products": products_data if products_data else [],  # 简化条件表达式
     }
     print(context)
-    return render(request, "cake_list.html", context)
+    return render(request, "cake_choco_list.html", context)
 
 
 # -------------- 蛋糕分类 end -------------- #
