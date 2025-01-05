@@ -54,7 +54,7 @@ def get_data_from_v3(url, params=None):
 # -------------- 首页 -------------- #
 def index(request):
     cakes = [
-        {"name": "巧克力蛋糕", "image": "img/images/cake/女王蛋糕.webp", "url": reverse('cake_choco_list')},
+        {"name": "巧克力蛋糕", "image": "img/images/cake/女王蛋糕.webp", "url": reverse('cake_choco')},
         {"name": "水果蛋糕", "image": "img/images/cake/女王蛋糕.webp", "url": "#"},
         {"name": "奶油蛋糕", "image": "img/images/cake/女王蛋糕.webp", "url": "#"},
         {"name": "儿童蛋糕", "image": "img/images/cake/女王蛋糕.webp", "url": "#"},
@@ -67,26 +67,25 @@ def index(request):
 # -------------- 首页end -------------- #
 
 
-# -------------- 蛋糕分类 -------------- #
-def cake_choco_list(request):
+# -------------- 获取巧克力蛋糕 -------------- #
+def cake_choco(request):
     """首页 从 V3 获取 "cake" 类别下 "choco-" 开头的产品数据"""
     v3_api_url = "https://mbcai.top/api/products/"
     params = {"category": "cake", "prefix": "choco-"}
-    # params = {"category": "cake"}
     products_data = get_data_from_v3(v3_api_url, params=params)
 
     context = {
         "products": products_data if products_data else [],  # 简化条件表达式
     }
     print(context)
-    return render(request, "cake_choco_list.html", context)
+    return render(request, "cake_choco.html", context)
 
 
 # -------------- 蛋糕分类 end -------------- #
 
 
 # ------ 测试专用 ------
-
+"""
 def test_api(request):
     api_key = os.environ.get('MBCAI_API_KEY')  # 获取环境变量
 
@@ -109,3 +108,4 @@ def test_api(request):
 
     except requests.exceptions.RequestException as e:
         return HttpResponse(f"Error: {e}", status=500)
+"""
