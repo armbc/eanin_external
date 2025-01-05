@@ -1,6 +1,5 @@
 from django.shortcuts import render
 import os
-from django.http import HttpResponse
 import requests
 from django.urls import reverse
 
@@ -48,7 +47,7 @@ def get_data_from_v3(url, params=None):
         return response.json()
     except requests.RequestException as e:
         print(f"Error fetching data from V3: {e}")
-        return None
+        return None  # 或返回空列表 []
 
 
 # -------------- 首页 -------------- #
@@ -64,24 +63,27 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-# -------------- 首页end -------------- #
-
-
 # -------------- 获取巧克力蛋糕 -------------- #
 def cake_choco(request):
     """首页 从 V3 获取 "cake" 类别下 "choco-" 开头的产品数据"""
     v3_api_url = "https://mbcai.top/api/products/"
     params = {"category": "cake", "prefix": "choco-"}
     products_data = get_data_from_v3(v3_api_url, params=params)
-
+    # 筛选数据
+    filtered_products = []
+    if products_data:
+        for product in products_data:
+            if product.get("is_available", True):  # 保留 is_available 为 True 的项
+                new_product = {}
+                for key, value in product.items():
+                    if key not in ("id", "product_code", "category", "supplier", "is_available"):
+                        new_product[key] = value
+                filtered_products.append(new_product)
     context = {
-        "products": products_data if products_data else [],  # 简化条件表达式
+        "products": filtered_products if filtered_products else [],  # 简化条件表达式
     }
     print(context)
     return render(request, "cake_choco.html", context)
-
-
-# -------------- 蛋糕分类 end -------------- #
 
 
 # ------ 测试专用 ------
