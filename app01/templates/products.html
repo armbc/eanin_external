@@ -4,8 +4,23 @@
 {% block content %}
 
     <div style="margin-top: 20px"></div>
-    <h4>路由正常！</h4>
-    
+    <h1>产品展示</h1>
+    <div id="product-list">
+        {% if products %}
+            {% for product in products %}
+                <div class="product">
+                    <h2>{{ product.name }}</h2>
+                    <img src="{{ product.main_image }}" alt="{{ product.name }}">
+                    <p>价格: {{ product.spec_price }}</p>
+                    <p>供应商: {{ product.supplier }}</p>
+                    <p>{{ product.description }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>没有找到任何产品。</p>
+        {% endif %}
+    </div>
+
     <style>
         .main-container {
             width: 94%;

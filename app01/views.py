@@ -87,13 +87,20 @@ def products(request):
     # print(products_url, params)
     products_data = get_data_from_v3(products_url, params=params)
 
-    if products_data:
-        products = products_data  #  假设 API 直接返回产品列表
-        context = {'products': products}
-        print(products)
-        return render(request, 'products.html', context)
-    else:
+    if products_data is None:
+        # 如果没有收到 products_data，返回 HttpResponse
         return HttpResponse("Failed to fetch products from V3.", status=500)
+    else:
+        # 如果返回了空数据，传送空的 products_data
+        if not products_data:
+            products_data = []  # 传递空列表
+
+        # 构造完整的图片 URL
+        for product in products_data:
+            product['main_image'] = f"https://mbcai.top{product['main_image']}"  # 构造完整的图片 URL
+
+        context = {'products': products_data}
+        return render(request, 'products.html', context)
 
 
     # 筛选数据
