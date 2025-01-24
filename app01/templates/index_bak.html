@@ -9,26 +9,37 @@
     </div>
 
     <div class="main-container">
+        <!-- 主要容器的内容 -->
         <div class="category-title">
             <h2>蛋糕系列</h2>
         </div>
+
 
         {% if error_message %}
             <p style="color: red;">{{ error_message }}</p>
         {% endif %}
 
-        <div class="subcategory-list" style=" margin-top: 50px">
+        <h1>Cake Subcategories</h1>
+        <ul>
             {% for subcategory in cake_subcategories %}
-                <div class="subcategory">
-                    <a href="{% url 'products' %}?category=cake&subcategory={{ subcategory.value }}" class="subcategory-link">
-                        <h4>{{ subcategory.name }}</h4>
-                        <img src="{% static 'img/logo原绿色.png' %}" alt="{{ subcategory.name }}">
+                <li>{{ subcategory.name }} ({{ subcategory.value }})</li>
+            {% endfor %}
+        </ul>
+
+        <div class="product-list">
+            {% for subcategory in cake_subcategories %}
+                <div class="product">
+                    <a href="{% url 'product_list' sub_category=subcategory.value %}"
+                     class="product-title">
+                        <h6>{{ subcategory.name }}</h6>
+                        <img src="{% static 'img/images/cake/女王蛋糕.webp' %}" alt="{{ subcategory.name }}">
                     </a>
                 </div>
             {% endfor %}
         </div>
 
-        <div id="product-list-container"></div>
+
+        <!-- ...更多内容... -->
     </div>
 
     <style>
@@ -50,41 +61,37 @@
             margin-bottom: 20px;
         }
 
-        .subcategory-list {
+        .product-list {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around; /* 平均分布产品 */
             width: 100%; /*  确保产品列表占满容器宽度 */
         }
 
-        .subcategory {
+        .product {
             width: 28%; /*  调整宽度以适应 5 个产品，并留有一些间距 */
-            margin-bottom: 40px; /*  产品之间的垂直间距 */
+            margin-bottom: 20px; /*  产品之间的垂直间距 */
             text-align: center; /*  使标题和图片居中 */
-            /* border: 1px solid #0b2e13; */
+            /*  border: 1px solid red; */
         }
 
-        .subcategory img {
+        .product img {
             max-width: 100%; /*  图片不超过容器宽度 */
             height: auto; /*  保持图片比例 */
             display: block; /*  防止图片底部出现空白 */
-            border: 1px solid #abc3b1;
-            padding: 12px;
-            border-image-width: 10px; /* 调整边框宽度 */
-            box-shadow: 2px 2px 5px 2px #888888;
+            /*  border: 1px solid gold;  */
         }
 
-        .subcategory-link {
+        .product-title {
             margin-bottom: 10px;
             text-decoration: none; /*  移除链接下划线 */
             color: inherit; /*  继承父元素的文本颜色 */
             display: block; /*  确保链接占据整个标题区域 */
         }
 
-        .subcategory-link:hover {
+        .product-title:hover {
             text-decoration: underline; /*  鼠标悬停时显示下划线 */
             /*  或者其他你喜欢的悬停效果 */
         }
     </style>
-
 {% endblock %}

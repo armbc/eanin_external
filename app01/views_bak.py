@@ -1,6 +1,7 @@
-from django.shortcuts import render,  HttpResponse
+from django.shortcuts import render
 import os
 import requests
+from django.urls import reverse
 
 # -------------- 从环境变量中获取APIkey，渲染一个JavaScript变量api_key
 """
@@ -40,8 +41,6 @@ def get_data_from_v3(url, params=None):
         "Authorization": f"Api-Key {api_key}"
     }
 
-    # print(params)
-
     try:
         response = requests.get(url, headers=headers, params=params)
         response.raise_for_status()  # 抛出 HTTPError 异常以进行错误处理
@@ -54,7 +53,7 @@ def get_data_from_v3(url, params=None):
 # -------------- 首页 -------------- #
 """首页 从 V3 获取 "cake" 类别下sub_category小类的产品数据"""
 def index(request):
-    v3_api_url = "https://mbcai.top/api/categories/"
+    v3_api_url = "https://mbcai.top/api/CategorySubcategoryList/"
     v3_data = get_data_from_v3(v3_api_url)
 
     context = {}
@@ -65,38 +64,34 @@ def index(request):
         # 处理 V3 数据获取失败的情况，例如显示错误消息或使用默认数据
         context['categories'] = []
         context['cake_subcategories'] = []
-        context['error_message'] = "无法从 服务器 获取数据。"
+        context['error_message'] = "无法从 V3 获取数据。"
 
     # print(context)
     return render(request, 'index.html', context)
 
 
 # -------------- 获取蛋糕 -------------- #
-def products(request):
-    # category = request.GET.get('category')
-    category = request.GET.get('category')
-    subcategory = request.GET.get('subcategory')
+def product_list(request, sub_category):
+    # v3_api_url = "https://mbcai.top/api/products/"  # V3 API 入口
+    category = "cake"
+    # sub_category = request.GET.get('sub_category')
 
-    params = {}
-    if category:
-        params['category'] = category
-    if subcategory:
-        params['subcategory'] = subcategory
+    print(sub_category)
 
-    products_url = 'https://mbcai.top/api/products/'
-    # print(products_url, params)
-    products_data = get_data_from_v3(products_url, params=params)
-
-    if products_data:
-        products = products_data  #  假设 API 直接返回产品列表
-        context = {'products': products}
-        print(products)
-        return render(request, 'products.html', context)
-    else:
-        return HttpResponse("Failed to fetch products from V3.", status=500)
+    # v3_url = f"{v3_api_url}?category={category}&sub_category={sub_category}&is_available=True"  # 使用 f-string 构建 URL
+    # products = get_data_from_v3(v3_url)
+    # print(products)
+    exit()
 
 
     # 筛选数据
+    if products:
+        context = {'products': products, 'category': category, 'sub_category': sub_category}
+        return render(request, 'products.html', context)
+    else:
+        # 处理 API 请求失败的情况
+        context = {'products': [], 'category': category, 'sub_category': sub_category} # 传递 category 和 sub_category 给模板，以便处理错误或空列表的情况
+        return render(request, 'products.html', context)
 
 
 # ------ 测试专用 ------
