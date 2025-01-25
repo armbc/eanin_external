@@ -1,4 +1,4 @@
-from django.shortcuts import render,  HttpResponse
+from django.shortcuts import render, HttpResponse
 import os
 import requests
 
@@ -53,6 +53,8 @@ def get_data_from_v3(url, params=None):
 
 # -------------- 首页 -------------- #
 """首页 从 V3 获取 "cake" 类别下sub_category小类的产品数据"""
+
+
 def index(request):
     v3_api_url = "https://mbcai.top/api/categories/"
     v3_data = get_data_from_v3(v3_api_url)
@@ -68,7 +70,7 @@ def index(request):
         context['cake_subcategories'] = []
         context['error_message'] = "无法从 服务器 获取数据。"
 
-    # print(context)
+    print(context)
     return render(request, 'index.html', context)
 
 
@@ -110,7 +112,6 @@ def products(request):
         context = {'products': products_data, 'subcategory_name': subcategory_name}
         # print(context)
         return render(request, 'products.html', context)
-
 
     # 筛选数据
 

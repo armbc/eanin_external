@@ -4,19 +4,47 @@
 {% block content %}
 
     <div class="main-container" style="margin-top: 20px">
-        <h2>{{subcategory_name}}</h2>
+        <h2>{{ subcategory_name }}</h2>
         <div class="row">
             <div class="col-sm" id="product-list">
                 {% if products %}
                     {% for product in products %}
                         <h4 class="product-title">【{{ product.name }}】</h4>
                         <div class="product">
-                            <img src="{{ product.main_image }}" alt="{{ product.name }}">
-                            <ul class="introduce">
-                                <li>价格: {{ product.spec_price }}</li>
-                                <li>意林{{ product.supplier }}</li>
-                                <li>{{ product.description }}</li>
-                            </ul>
+                            <!-- 轮播 -->
+                            <div id="carouselExampleControlsNoTouching" class="carousel slide" data-touch="false"
+                                 data-interval="false">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="{{ product.main_image }}" alt="{{ product.name }}">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="{{ product.secondary_image1 }}" alt="{{ product.name }}">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="{{ product.secondary_image2 }}" alt="{{ product.name }}">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button"
+                                        data-target="#carouselExampleControlsNoTouching"
+                                        data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                        data-target="#carouselExampleControlsNoTouching"
+                                        data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </button>
+                                <ul class="introduce">
+                                    <li>价格: {{ product.spec_price }}</li>
+                                    <li>意林{{ product.supplier }}</li>
+                                    <li>{{ product.description }}</li>
+                                </ul>
+                            </div>
+
+
                         </div>
                     {% endfor %}
                 {% else %}
@@ -26,7 +54,6 @@
 
         </div>
     </div>
-
 
     <style>
         .main-container {
@@ -47,6 +74,7 @@
 
         .product-title { /*  新的样式，用于包裹每个产品 */
             /* text-align: center; */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
             padding-left: 30px;
             padding-top: 40px;
             margin-bottom: 20px;
@@ -55,14 +83,15 @@
         .product img {
             max-width: 100%;
             height: auto;
-            /* border: 5px solid #114639; /* 黑色边框，宽度为 5 像素 */
+            border: 5px solid #114639; /* 黑色边框，宽度为 5 像素 */
             padding: 10px; /* 内边距，给图片和边框之间留出空间 */
             border-radius: 15px; /* 所有四个角的半径为 10 像素 */
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* 阴影效果 */
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
             display: block; /*  仍然需要 display: block; 防止底部空白 */
         }
 
         .introduce {
+            font-size: 20px; /* 16 像素 */
             margin-left: 40px;
             margin-top: 10px;
             padding-bottom: 20px;
