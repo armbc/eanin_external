@@ -3,23 +3,30 @@
 {% load static %}
 {% block content %}
 
-    <div style="margin-top: 20px"></div>
-    <h1>产品展示</h1>
-    <div id="product-list">
-        {% if products %}
-            {% for product in products %}
-                <div class="product">
-                    <h2>{{ product.name }}</h2>
-                    <img src="{{ product.main_image }}" alt="{{ product.name }}">
-                    <p>价格: {{ product.spec_price }}</p>
-                    <p>供应商: {{ product.supplier }}</p>
-                    <p>{{ product.description }}</p>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>没有找到任何产品。</p>
-        {% endif %}
+    <div class="main-container" style="margin-top: 20px">
+        <h2>{{subcategory_name}}</h2>
+        <div class="row">
+            <div class="col-sm" id="product-list">
+                {% if products %}
+                    {% for product in products %}
+                        <h4 class="product-title">【{{ product.name }}】</h4>
+                        <div class="product">
+                            <img src="{{ product.main_image }}" alt="{{ product.name }}">
+                            <ul class="introduce">
+                                <li>价格: {{ product.spec_price }}</li>
+                                <li>意林{{ product.supplier }}</li>
+                                <li>{{ product.description }}</li>
+                            </ul>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>没有找到任何产品。</p>
+                {% endif %}
+            </div>
+
+        </div>
     </div>
+
 
     <style>
         .main-container {
@@ -33,17 +40,32 @@
             color: #114639;
         }
 
-        .product-item { /*  新的样式，用于包裹每个产品 */
-            display: flex;
-            flex-direction: column; /* 让标题和图片垂直排列 */
-            align-items: center; /* 让图片在 product-item 内水平居中 */
-            width: 100%; /* 确保 product-item 占据整个宽度 */
+        .product {
+            background-color: #bdd1c1;
+            border-radius: 15px; /* 所有四个角的半径为 10 像素 */
         }
 
-        .image-container img {
+        .product-title { /*  新的样式，用于包裹每个产品 */
+            /* text-align: center; */
+            padding-left: 30px;
+            padding-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .product img {
             max-width: 100%;
             height: auto;
+            /* border: 5px solid #114639; /* 黑色边框，宽度为 5 像素 */
+            padding: 10px; /* 内边距，给图片和边框之间留出空间 */
+            border-radius: 15px; /* 所有四个角的半径为 10 像素 */
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* 阴影效果 */
             display: block; /*  仍然需要 display: block; 防止底部空白 */
+        }
+
+        .introduce {
+            margin-left: 40px;
+            margin-top: 10px;
+            padding-bottom: 20px;
         }
     </style>
 

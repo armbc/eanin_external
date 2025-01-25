@@ -56,6 +56,7 @@ def get_data_from_v3(url, params=None):
 def index(request):
     v3_api_url = "https://mbcai.top/api/categories/"
     v3_data = get_data_from_v3(v3_api_url)
+    # print(v3_data)
 
     context = {}
     if v3_data:
@@ -76,16 +77,21 @@ def products(request):
     # category = request.GET.get('category')
     category = request.GET.get('category')
     subcategory = request.GET.get('subcategory')
+    subcategory_name = request.GET.get('subcategory_name')
+    # print(subcategory_name)
 
     params = {}
     if category:
         params['category'] = category
     if subcategory:
         params['subcategory'] = subcategory
+    if subcategory_name:
+        params['subcategory_name'] = subcategory_name
 
     products_url = 'https://mbcai.top/api/products/'
     # print(products_url, params)
     products_data = get_data_from_v3(products_url, params=params)
+    # print(products_data)
 
     if products_data is None:
         # 如果没有收到 products_data，返回 HttpResponse
@@ -98,8 +104,11 @@ def products(request):
         # 构造完整的图片 URL
         for product in products_data:
             product['main_image'] = f"https://mbcai.top{product['main_image']}"  # 构造完整的图片 URL
+            product['secondary_image1'] = f"https://mbcai.top{product['secondary_image1']}"  # 构造完整的图片 URL
+            product['secondary_image2'] = f"https://mbcai.top{product['secondary_image2']}"  # 构造完整的图片 URL
 
-        context = {'products': products_data}
+        context = {'products': products_data, 'subcategory_name': subcategory_name}
+        # print(context)
         return render(request, 'products.html', context)
 
 

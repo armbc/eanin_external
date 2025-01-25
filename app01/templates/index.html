@@ -20,7 +20,7 @@
         <div class="subcategory-list" style=" margin-top: 50px">
             {% for subcategory in cake_subcategories %}
                 <div class="subcategory">
-                    <a href="{% url 'products' %}?category=cake&subcategory={{ subcategory.value }}" class="subcategory-link">
+                    <a href="{% url 'products' %}?category=cake&subcategory={{ subcategory.value }}&subcategory_name={{ subcategory.name }}" class="subcategory-link">
                         <h4>{{ subcategory.name }}</h4>
                         <img src="{% static 'img/logo原绿色.png' %}" alt="{{ subcategory.name }}">
                     </a>
@@ -35,7 +35,7 @@
         .main-container {
             width: 94%;
             margin: 0 auto; /* 简化的居中写法 */
-            display: flex;
+            display: flex;  /* 弹性盒布局 创建响应式设计 */
             flex-direction: column; /*  使标题和产品列表垂直排列 */
             align-items: center; /* 水平居中 */
             /* border: 1px solid red; 可选，用于可视化容器边界 */
@@ -52,7 +52,7 @@
 
         .subcategory-list {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: wrap;    /* wrap: 子元素会换行，超出容器宽度的元素会移动到下一行。 */
             justify-content: space-around; /* 平均分布产品 */
             width: 100%; /*  确保产品列表占满容器宽度 */
         }
@@ -69,6 +69,7 @@
             height: auto; /*  保持图片比例 */
             display: block; /*  防止图片底部出现空白 */
             border: 1px solid #abc3b1;
+            border-radius: 15px; /* 所有四个角的半径为 10 像素 */
             padding: 12px;
             border-image-width: 10px; /* 调整边框宽度 */
             box-shadow: 2px 2px 5px 2px #888888;
