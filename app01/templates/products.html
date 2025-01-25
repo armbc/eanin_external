@@ -11,10 +11,9 @@
                     {% for product in products %}
                         <h4 class="product-title">【{{ product.name }}】</h4>
                         <div class="product">
-                        
+
                             <!-- 轮播 -->
-                            <div id="{{ product.name }}" class="carousel slide" data-touch="false"
-                                 data-interval="false">
+                            <div id="{{ product.name }}" class="carousel slide" data-interval="3000">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
                                         <img src="{{ product.main_image }}" alt="{{ product.name }}">
