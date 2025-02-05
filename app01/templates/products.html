@@ -13,7 +13,7 @@
                         <div class="product">
 
                             <!-- 轮播 -->
-                            <div id="{{ product.name }}" class="carousel slide" data-interval="3000">
+                            <div id="{{ product.name }}" class="carousel slide" data-interval="5000">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
                                         <img src="{{ product.main_image }}" alt="{{ product.name }}">
@@ -87,7 +87,7 @@
             padding: 10px; /* 内边距，给图片和边框之间留出空间 */
             border-radius: 15px; /* 所有四个角的半径为 10 像素 */
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
-            display: block; /*  仍然需要 display: block; 防止底部空白 */
+            display: block; /* 仍然需要 display: block; 防止底部空白 */
         }
 
         .introduce {
@@ -99,4 +99,13 @@
     </style>
 
 
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.carousel').carousel({
+                interval: 3000 // 设置切换时间间隔
+            });
+        });
+    </script>
 {% endblock %}
