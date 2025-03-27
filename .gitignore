@@ -2,6 +2,9 @@
 
 /EaninWeb/settings.py
 Test-changePWD.py
+bakfiles/
+app01/test/
+app01/migrations/
 
 __pycache__
 # *.py[cod]
